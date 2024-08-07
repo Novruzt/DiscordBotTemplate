@@ -50,3 +50,24 @@ C:.
                 │
                 └───Exceptions
                         DefaultException.cs
+```
+## 🚀 Guideline
+
+[`BotConfig/`](https://github.com/Novruzt/DiscordBotTemplate/tree/master/BotTemplate/BotConfigs) folder is for Bot configurations. 
+
+[`BotExtensions/`](https://github.com/Novruzt/DiscordBotTemplate/tree/master/BotTemplate/BotExtensions) folder basically Helper for commands and events.
+
+[`Commands/`](https://github.com/Novruzt/DiscordBotTemplate/tree/master/BotTemplate/Commands) folder is for commands both prefix and slash commands are seperated
+
+[`Utils/`](https://github.com/Novruzt/DiscordBotTemplate/tree/master/BotTemplate/Utils/) folder are rest of project. If you have plan to implement Database or other technologies use this folder. 
+
+***Specific guideline for classes are given inside.***
+
+
+## 🔗 Additional
+
+* [Discord API Documentation](https://discord.com/developers/docs/intro)
+
+* [DSharp+ Repository](https://github.com/DSharpPlus/DSharpPlus)
+
+* [Dsharp+ Documentation](https://dsharpplus.github.io/DSharpPlus/index.html)
