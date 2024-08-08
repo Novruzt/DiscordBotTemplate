@@ -10,6 +10,8 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.SlashCommands;
 using DSharpPlus.Entities;
+using BotTemplate.Utils.Handlers.ExceptionHandler;
+using DSharpPlus.SlashCommands.EventArgs;
 
 namespace BotTemplate;
 
@@ -18,6 +20,9 @@ internal class Program
     public static DiscordClient Client;
     public static CommandsNextExtension Commands;
     public static CommandsNextConfiguration CommandConfiguration;
+
+    public static int HandleErrors { get; private set; }
+
     static async Task Main()
     {
         await JsonHandler.ReadJsonAsync();
@@ -45,7 +50,7 @@ internal class Program
 
         CommandConfiguration = new()
         {
-            StringPrefixes = new string[] { JsonHandler.Prefix },
+            StringPrefixes = new string[] { JsonHandler.Prefix},
             EnableMentionPrefix = true,
             EnableDms = true,
             EnableDefaultHelp = false,
@@ -58,14 +63,27 @@ internal class Program
         //Register commands classes to Commands.
         Commands.RegisterCommands<TestCommands>();
         Commands.RegisterCommands<BotSettingCommands>();
+        Commands.CommandErrored += HandleCommandsErrors;
 
         //Register slash commands
         SlashCommandsExtension slashCommandsConfig = Client.UseSlashCommands();
 
         slashCommandsConfig.RegisterCommands<TestSlashCommands>();
 
+        slashCommandsConfig.SlashCommandErrored += HandleSlashErrors;
+
         await Client.ConnectAsync();
         await Task.Delay(-1); //To keep bot running forever if project is running.
+    }
+
+    private static async Task HandleSlashErrors(SlashCommandsExtension sender, SlashCommandErrorEventArgs args)
+    {
+        await GlobalExceptionHandler.HandleSlashCommandErrors(args);
+    }
+
+    private static async Task HandleCommandsErrors(CommandsNextExtension sender, CommandErrorEventArgs args)
+    {
+        await GlobalExceptionHandler.HandleCommandErrors(args);
     }
 
     private static async Task<int> PrefixResolverAsync(DiscordMessage msg)
